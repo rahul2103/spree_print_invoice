@@ -15,8 +15,8 @@ module Spree
 
       def to_h
         {
-          page_layout: page_layout,
-          page_size: page_size,
+          page_layout:,
+          page_size:,
           skip_page_creation: false
         }
       end

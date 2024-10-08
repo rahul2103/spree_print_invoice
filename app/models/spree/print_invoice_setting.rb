@@ -8,7 +8,7 @@ module Spree
     end
 
     def page_layouts
-      %w(landscape portrait)
+      %w[landscape portrait]
     end
 
     def use_sequential_number?

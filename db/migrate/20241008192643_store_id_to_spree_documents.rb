@@ -9,10 +9,10 @@ class StoreIdToSpreeDocuments < ActiveRecord::Migration[7.2]
     end
 
     Spree::Store.all.each do |store|
-      #create a default setting for all stores
+      # create a default setting for all stores
       Spree::PrintInvoiceSetting.find_or_create_by(store_id: store.id)
     end
-    
+
     Spree::BookkeepingDocument.all.each do |bd|
       bd_store = bd.printable.store
       bd.update_columns(setting_id: bd_store.print_invoice_setting.id)

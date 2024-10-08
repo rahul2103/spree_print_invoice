@@ -33,7 +33,7 @@ module Spree
       adjustments = []
       all_adjustments.group_by(&:label).each do |label, adjustment_group|
         adjustments << Spree::Printables::Invoice::Adjustment.new(
-          label: label,
+          label:,
           amount: adjustment_group.map(&:amount).sum
         )
       end

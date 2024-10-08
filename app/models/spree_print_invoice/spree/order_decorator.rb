@@ -37,12 +37,14 @@ module SpreePrintInvoice
 
       def pdf_storage_path(template)
         ActiveSupport::Deprecation.warn('This API has changed: Please use order.{packaging_slip, invoice}.pdf_file_path instead')
-        bookkeeping_documents.find_by!(template: template).file_path
+        bookkeeping_documents.find_by!(template:).file_path
       end
 
       def invoice_for_order
-        bookkeeping_documents.create(template: 'invoice', store_id: store_id, setting_id: Spree::Store.find_by(id: store_id).print_invoice_setting_id)
-        bookkeeping_documents.create(template: 'packaging_slip', store_id: store_id, setting_id: Spree::Store.find_by(id: store_id).print_invoice_setting_id)
+        bookkeeping_documents.create(template: 'invoice', store_id:,
+                                     setting_id: Spree::Store.find_by(id: store_id).print_invoice_setting_id)
+        bookkeeping_documents.create(template: 'packaging_slip', store_id:,
+                                     setting_id: Spree::Store.find_by(id: store_id).print_invoice_setting_id)
       end
     end
   end
