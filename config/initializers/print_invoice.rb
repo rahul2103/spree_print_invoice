@@ -12,6 +12,7 @@ Rails.application.config.after_initialize do
      Rails.application.config.spree_backend.main_menu.add_to_section('settings',
       ::Spree::Admin::MainMenu::ItemBuilder.new('print_invoice.settings', ::Spree::Core::Engine.routes.url_helpers.edit_admin_print_invoice_settings_path).
         with_manage_ability_check(::Spree::BookkeepingDocument).
+        with_match_path('/print_invoice_settings').
         build
       )
   end

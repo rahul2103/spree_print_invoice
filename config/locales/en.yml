@@ -5,6 +5,8 @@ en:
       tab:
         invoices: Invoices
         packaging_slips: Packaging Slips
+      invoices: Invoices
+      packaging_slips: Packaging Slips
     print_invoice:
       documents: Documents
       documents_for_order: "Documents for order %{order_number}"
