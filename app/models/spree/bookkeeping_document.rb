@@ -15,6 +15,8 @@ module Spree
     # template should be a string, such as "invoice" or "packaging_slip"
     #
     belongs_to :printable, polymorphic: true
+    belongs_to :store
+    belongs_to :print_invoice_setting, foreign_key: :setting_id, class_name: "Spree::PrintInvoiceSetting"
     validates :printable, :template, presence: true
     validates *PERSISTED_ATTRS, presence: true, if: -> { self.persisted? }
     scope :invoices, -> { where(template: 'invoice') }
@@ -64,7 +66,7 @@ module Spree
     #   Spree::PrintInvoice::Config.store_pdf to false
     #
     def pdf
-      if Spree::PrintInvoice::Config.store_pdf
+      if print_invoice_setting.store_pdf
         send_or_create_pdf
       else
         render_pdf
@@ -97,7 +99,7 @@ module Spree
     # Creates the folder if it's not present yet.
     #
     def storage_path
-      storage_path = Rails.root.join(Spree::PrintInvoice::Config.storage_path, template.pluralize)
+      storage_path = Rails.root.join(print_invoice_setting.storage_path, template.pluralize)
       FileUtils.mkdir_p(storage_path)
       storage_path
     end
