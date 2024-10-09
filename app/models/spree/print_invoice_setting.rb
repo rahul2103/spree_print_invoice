@@ -16,8 +16,7 @@ module Spree
     end
 
     def increase_invoice_number!
-      current_invoice_number = next_number
-      set_preference(:next_number, current_invoice_number + 1)
+      next_number + 1
     end
 
     def font_faces

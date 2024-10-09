@@ -2,15 +2,11 @@
   <%= Spree.t(:settings, scope: :print_invoice) %>
 <% end %>
 
-<%= form_with model: [:admin, @print_invoice_setting], url: admin_print_invoice_settings_path do |f| %>
-  <fieldset class="no-border-top">
-    <div data-hook="admin_print_invoice_method_form_fields">
-      <%= render 'form', f: f %>
+<%= render partial: 'spree/admin/shared/error_messages', locals: { target: @print_invoice_setting } %>
 
-      <div class="form-actions" data-hook="buttons">
-        <%= button Spree.t('actions.update'), 'save' %>
-      </div>
-
-    </div>
+<%= form_for [:admin, @print_invoice_setting], url: admin_print_invoice_settings_path do |f| %>
+  <fieldset>
+    <%= render partial: 'form', locals: { f: f } %>
+    <%= render partial: 'spree/admin/shared/edit_resource_links' %>
   </fieldset>
 <% end %>
