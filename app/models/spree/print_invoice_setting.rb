@@ -3,6 +3,8 @@ module Spree
     belongs_to :store
     has_many :bookkeeping_documents
 
+    has_one_attached :logo
+
     def page_sizes
       ::PDF::Core::PageGeometry::SIZES.keys
     end
