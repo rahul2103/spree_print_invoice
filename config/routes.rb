@@ -7,7 +7,7 @@ Spree::Core::Engine.add_routes do
       end
     end
 
-    resource :print_invoice_settings, only: %i[edit update]
+    resources :print_invoice_settings, only: %i[index update]
     resources :bookkeeping_documents, only: %i[index show]
   end
 end
