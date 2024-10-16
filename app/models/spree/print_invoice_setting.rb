@@ -1,27 +1,16 @@
 module Spree
-  class PrintInvoiceSetting < Preferences::Configuration
-    preference :next_number,      :integer, default: nil
-    preference :logo_path,        :string,  default: 'admin/logo.png'
-    preference :page_size,        :string,  default: 'LETTER'
-    preference :page_layout,      :string,  default: 'landscape'
-    preference :footer_left,      :string,  default: ''
-    preference :footer_right,     :string,  default: ''
-    preference :return_message,   :text,    default: ''
-    preference :anomaly_message,  :text,    default: ''
-    preference :use_footer,       :boolean, default: false
-    preference :use_page_numbers, :boolean, default: false
-    preference :logo_scale,       :integer, default: 50
-    preference :font_face,        :string,  default: 'Helvetica'
-    preference :font_size,        :integer, default: 9
-    preference :store_pdf,        :boolean, default: false
-    preference :storage_path,     :string,  default: 'tmp/invoice_prints'
+  class PrintInvoiceSetting < Spree::Base
+    belongs_to :store
+    has_many :bookkeeping_documents
+
+    has_one_attached :logo
 
     def page_sizes
       ::PDF::Core::PageGeometry::SIZES.keys
     end
 
     def page_layouts
-      %w(landscape portrait)
+      %w[landscape portrait]
     end
 
     def use_sequential_number?
@@ -29,14 +18,11 @@ module Spree
     end
 
     def increase_invoice_number!
-      current_invoice_number = next_number
-      set_preference(:next_number, current_invoice_number + 1)
+      next_number + 1
     end
 
     def font_faces
-      ::Prawn::Font::AFM::BUILT_INS.reject do |font|
-        font =~ /zapf|symbol|bold|italic|oblique/i
-      end + self.class.additional_fonts.keys
+      self.class.additional_fonts.keys
     end
 
     def font_sizes
@@ -54,6 +40,18 @@ module Spree
           italic: SpreePrintInvoice::Engine.root.join('data', 'fonts', 'DejaVuSans-Oblique.ttf'),
           bold_italic: SpreePrintInvoice::Engine.root.join('data', 'fonts', 'DejaVuSans-BoldOblique.ttf'),
           normal: SpreePrintInvoice::Engine.root.join('data', 'fonts', 'DejaVuSans.ttf')
+        },
+        'Freedom' => {
+          bold: SpreePrintInvoice::Engine.root.join('data', 'fonts', 'freedom-10eM.ttf'),
+          italic: SpreePrintInvoice::Engine.root.join('data', 'fonts', 'freedom-10eM.ttf'),
+          bold_italic: SpreePrintInvoice::Engine.root.join('data', 'fonts', 'freedom-10eM.ttf'),
+          normal: SpreePrintInvoice::Engine.root.join('data', 'fonts', 'freedom-10eM.ttf')
+        },
+        'Atop' => {
+          bold: SpreePrintInvoice::Engine.root.join('data', 'fonts', 'atop-R99O3.ttf'),
+          italic: SpreePrintInvoice::Engine.root.join('data', 'fonts', 'atop-R99O3.ttf'),
+          bold_italic: SpreePrintInvoice::Engine.root.join('data', 'fonts', 'atop-R99O3.ttf'),
+          normal: SpreePrintInvoice::Engine.root.join('data', 'fonts', 'atop-R99O3.ttf')
         },
         'msjh' => {
           bold: SpreePrintInvoice::Engine.root.join('data', 'fonts', 'msjh.ttf'),

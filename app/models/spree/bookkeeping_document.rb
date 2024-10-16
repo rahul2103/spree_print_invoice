@@ -1,11 +1,11 @@
 module Spree
   class BookkeepingDocument < ActiveRecord::Base
-    PERSISTED_ATTRS = [
-      :firstname,
-      :lastname,
-      :email,
-      :total,
-      :number
+    PERSISTED_ATTRS = %i[
+      firstname
+      lastname
+      email
+      total
+      number
     ]
 
     # Spree::BookkeepingDocument cares about creating PDFs. Whenever it needs to know
@@ -15,12 +15,18 @@ module Spree
     # template should be a string, such as "invoice" or "packaging_slip"
     #
     belongs_to :printable, polymorphic: true
+    belongs_to :store
+    belongs_to :print_invoice_setting, foreign_key: :setting_id, class_name: 'Spree::PrintInvoiceSetting'
     validates :printable, :template, presence: true
-    validates *PERSISTED_ATTRS, presence: true, if: -> { self.persisted? }
+    validates(*PERSISTED_ATTRS, presence: true, if: -> { persisted? })
     scope :invoices, -> { where(template: 'invoice') }
 
     before_create :copy_view_attributes
     after_save :after_save_actions
+
+    def self.ransackable_attributes(_auth_object = nil)
+      %w[created_at email firstname lastname number printable_id printable_type template]
+    end
 
     # An instance of Spree::Printable::#{YourModel}::#{YourTemplate}Presenter
     #
@@ -60,7 +66,7 @@ module Spree
     #   Spree::PrintInvoice::Config.store_pdf to false
     #
     def pdf
-      if Spree::PrintInvoice::Config.store_pdf
+      if print_invoice_setting.store_pdf
         send_or_create_pdf
       else
         render_pdf
@@ -93,7 +99,7 @@ module Spree
     # Creates the folder if it's not present yet.
     #
     def storage_path
-      storage_path = Rails.root.join(Spree::PrintInvoice::Config.storage_path, template.pluralize)
+      storage_path = Rails.root.join(print_invoice_setting.storage_path, template.pluralize)
       FileUtils.mkdir_p(storage_path)
       storage_path
     end
@@ -139,9 +145,7 @@ module Spree
     # Renders and stores it if it's not yet present.
     #
     def send_or_create_pdf
-      unless File.exist?(file_path)
-        File.open(file_path, 'wb') { |f| f.puts render_pdf }
-      end
+      File.open(file_path, 'wb') { |f| f.puts render_pdf } unless File.exist?(file_path)
 
       IO.binread(file_path)
     end
