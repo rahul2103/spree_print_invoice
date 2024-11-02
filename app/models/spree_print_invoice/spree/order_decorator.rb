@@ -45,8 +45,6 @@ module SpreePrintInvoice
 
         bookkeeping_documents.create(template: 'invoice', store_id:,
                                      setting_id: ::Spree::Store.find_by(id: store_id).print_invoice_setting_id)
-        bookkeeping_documents.create(template: 'packaging_slip', store_id:,
-                                     setting_id: ::Spree::Store.find_by(id: store_id).print_invoice_setting_id)
       end
     end
   end
