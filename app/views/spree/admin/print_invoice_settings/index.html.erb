@@ -1,0 +1,12 @@
+<% content_for :page_title do %>
+  <%= Spree.t(:settings, scope: :print_invoice) %>
+<% end %>
+
+<%= render partial: 'spree/admin/shared/error_messages', locals: { target: @print_invoice_setting } %>
+
+<%= form_for [:admin, @print_invoice_setting], url: admin_print_invoice_settings_path do |f| %>
+  <fieldset>
+    <%= render partial: 'form', locals: { f: f } %>
+    <%= render partial: 'spree/admin/shared/edit_resource_links' %>
+  </fieldset>
+<% end %>

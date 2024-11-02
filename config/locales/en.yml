@@ -5,8 +5,10 @@ en:
       tab:
         invoices: Invoices
         packaging_slips: Packaging Slips
+      invoices: Invoices
+      packaging_slips: Packaging Slips
     print_invoice:
-      documents: Documents
+      documents: Download Invoice
       documents_for_order: "Documents for order %{order_number}"
       buttons:
         invoice: Print Invoice
@@ -59,3 +61,5 @@ en:
       document_type: Document type
       email: Email
       total: Total
+    refresh_documents: Refresh Invoices
+    create_documents: Create Invoices

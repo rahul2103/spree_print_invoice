@@ -23,8 +23,8 @@ Gem::Specification.new do |s|
   s.requirements << 'none'
 
   s.add_runtime_dependency 'prawn-rails', '~> 1.3'
-  s.add_runtime_dependency 'spree_core', '>= 3.1.0', '< 5.0'
-  s.add_runtime_dependency 'spree_extension'
+  s.add_dependency 'spree', '>= 4.10.1'
+  s.add_dependency 'spree_extension'
 
   s.add_development_dependency 'capybara'
   s.add_development_dependency 'poltergeist'
@@ -40,6 +40,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'pry-rails'
   s.add_development_dependency 'rubocop'
   s.add_development_dependency 'pg'
-  s.add_development_dependency 'mysql2'
   s.add_development_dependency 'appraisal'
+
+  s.add_development_dependency 'spree_dev_tools'
 end

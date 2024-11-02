@@ -4,7 +4,6 @@ module Spree
       printable.number
     end
 
-    def after_save_actions
-    end
+    def after_save_actions; end
   end
 end
